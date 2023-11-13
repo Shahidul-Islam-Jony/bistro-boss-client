@@ -1,17 +1,18 @@
 import { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../../../providers/AuthProvider";
+import { FaShoppingCart } from 'react-icons/fa';
 
 
 const NavBar = () => {
     const { user, logOut } = useContext(AuthContext);
 
-    const handleLogout=()=>{
+    const handleLogout = () => {
         logOut()
-        .then(()=>{})
-        .catch(error=>{
-            console.log(error);
-        })
+            .then(() => { })
+            .catch(error => {
+                console.log(error);
+            })
     }
 
     const links = <div className="flex flex-row items-center">
@@ -19,10 +20,16 @@ const NavBar = () => {
         <NavLink to='/menu' className='mr-4 text-xl'>Menu</NavLink>
         <NavLink to='/order/salad' className='mr-4 text-xl'>Order Food</NavLink>
         <NavLink to='/secret' className='mr-4 text-xl'>Secret</NavLink>
+        <Link to='/'>
+            <button className="btn">
+                <FaShoppingCart></FaShoppingCart>
+                <div className="badge badge-secondary">+0</div>
+            </button>
+        </Link>
 
         {
             user ? <>
-            <span>{user?.displayName}</span>
+                {/* <span>{user?.displayName}</span> */}
                 <button onClick={handleLogout} className="btn btn-ghost">Logout</button>
             </> :
                 <><NavLink to='/login' className='mr-4 text-xl'>Login</NavLink></>
