@@ -14,7 +14,7 @@ const NavBar = () => {
         })
     }
 
-    const links = <>
+    const links = <div className="flex flex-row items-center">
         <NavLink to='/' className='mr-4 text-xl'>Home</NavLink>
         <NavLink to='/menu' className='mr-4 text-xl'>Menu</NavLink>
         <NavLink to='/order/salad' className='mr-4 text-xl'>Order Food</NavLink>
@@ -22,12 +22,13 @@ const NavBar = () => {
 
         {
             user ? <>
+            <span>{user?.displayName}</span>
                 <button onClick={handleLogout} className="btn btn-ghost">Logout</button>
             </> :
                 <><NavLink to='/login' className='mr-4 text-xl'>Login</NavLink></>
         }
 
-    </>
+    </div>
 
     return (
         <>
