@@ -12,6 +12,8 @@ const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    const from = location.state?.from?.pathname || '/';
+
     useEffect(() => {
         loadCaptchaEnginge(6);
     }, [])
@@ -43,7 +45,7 @@ const Login = () => {
                       `
                     }
                 });
-                navigate(location.state || '/')
+                navigate(from)
             })
     }
 
