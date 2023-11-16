@@ -1,10 +1,15 @@
-import { FaAd, FaBars, FaCalendar, FaHome, FaList, FaShoppingCart } from "react-icons/fa";
+import { FaAd, FaBars, FaCalendar, FaEnvelope, FaHome, FaList, FaShoppingCart } from "react-icons/fa";
 import { NavLink, Outlet } from "react-router-dom";
 import useCart from "../hooks/useCart";
 
 
 const Dashboard = () => {
     const [cart] = useCart();
+
+    // TODO: get is Admin value from the dataase
+    const isAdmin = true;
+
+
     return (
         <div className="flex">
             {/* dashboard side bar */}
@@ -25,12 +30,18 @@ const Dashboard = () => {
                     <li>
                         <NavLink to='/dashboard/bookings'><FaList></FaList>My Bookings</NavLink>
                     </li>
+
+                    {/* Shared nav links */}
+
                     <div className="divider"></div>
                     <li>
                         <NavLink to='/'><FaHome></FaHome>Home</NavLink>
                     </li>
                     <li>
                         <NavLink to='/menu'><FaBars></FaBars>Menu</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to='/order/contact'><FaEnvelope></FaEnvelope>Contact</NavLink>
                     </li>
                 </ul>
             </div>
