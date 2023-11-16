@@ -1,13 +1,14 @@
 import { FaAd, FaBars, FaBook, FaCalendar, FaEnvelope, FaHome, FaList, FaShoppingCart, FaUsers, FaUtensils } from "react-icons/fa";
 import { NavLink, Outlet } from "react-router-dom";
 import useCart from "../hooks/useCart";
+import useAdmin from "../hooks/useAdmin";
 
 
 const Dashboard = () => {
     const [cart] = useCart();
 
     // TODO: get is Admin value from the dataase
-    const isAdmin = true;
+    const [isAdmin] = useAdmin();
 
 
     return (
