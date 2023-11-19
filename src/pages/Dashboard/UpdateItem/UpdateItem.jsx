@@ -11,9 +11,9 @@ const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_ke
 
 
 const UpdateItem = () => {
-    const {name,category,recipe,price,_id} = useLoaderData();
+    const { name, category, recipe, price, _id } = useLoaderData();
     // console.log(item);
-    const { register, handleSubmit, reset } = useForm();
+    const { register, handleSubmit, } = useForm();  //destructure reset
     const axiosSecure = useAxiosSecure();
     const axiosPublic = useAxiosPublic();
 
@@ -39,9 +39,9 @@ const UpdateItem = () => {
             // now send data to backend
             const menuRes = await axiosSecure.patch(`/menu/${_id}`, menuItem);
             console.log(menuRes.data);
-            if (menuRes.data.insertedId) {
+            if (menuRes.data.modifiedCount > 0) {
                 //show success popup
-                reset();
+                // reset();
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
