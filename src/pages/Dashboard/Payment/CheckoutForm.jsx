@@ -62,14 +62,30 @@ const CheckoutForm = () => {
                 }
             }
         })
-        if(confirmError){
+        if (confirmError) {
             console.log('confirm error');
         }
-        else{
-            console.log('payment Intent',paymentIntent);
-            if(paymentIntent.status === 'succeeded'){
-                console.log('Transaction id: ',paymentIntent.id);
+        else {
+            console.log('payment Intent', paymentIntent);
+            if (paymentIntent.status === 'succeeded') {
+                console.log('Transaction id: ', paymentIntent.id);
                 setTransactionId(paymentIntent.id);
+
+                // Now save the payment in the database
+                const payment = {
+                    email: user.email,
+                    price: totalPrice,
+                    transactionId: paymentIntent.id,
+                    date: new Date(), // utc date convert. use moment js
+                    cartIds: cart.map(item => item._id),
+                    menuItemIds: cart.map(item => item.menuId),
+                    status: 'pending'
+                }
+
+                const res = await axiosSecure.post('/payments', payment)
+                console.log('payment saves', res);
+
+
             }
         }
 
