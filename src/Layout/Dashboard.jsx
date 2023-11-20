@@ -18,6 +18,7 @@ const Dashboard = () => {
                 <ul className="menu p-4">
                     {
                         isAdmin ? <>
+                            {/* Admin panel */}
                             <li>
                                 <NavLink to='/dashboard/adminHome'><FaHome></FaHome>Admin Home</NavLink>
                             </li>
@@ -36,6 +37,7 @@ const Dashboard = () => {
                         </>
                             :
                             <>
+                                {/* normal user panel */}
                                 <li>
                                     <NavLink to='/dashboard/userHome'><FaHome></FaHome>User Home</NavLink>
                                 </li>
@@ -49,7 +51,7 @@ const Dashboard = () => {
                                     <NavLink to='/dashboard/review'><FaAd></FaAd>Add a Review</NavLink>
                                 </li>
                                 <li>
-                                    <NavLink to='/dashboard/bookings'><FaList></FaList>My Bookings</NavLink>
+                                    <NavLink to='/dashboard/paymentHistory'><FaList></FaList>Payment History</NavLink>
                                 </li>
                             </>
                     }

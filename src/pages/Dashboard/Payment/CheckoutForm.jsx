@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useCart from "../../../hooks/useCart";
 import useAuth from "../../../hooks/useAuth";
+import Swal from "sweetalert2";
 
 
 const CheckoutForm = () => {
@@ -10,19 +11,21 @@ const CheckoutForm = () => {
     const elements = useElements();
     const [error, setError] = useState('')
     const axiosSecure = useAxiosSecure();
-    const [cart] = useCart();
+    const [cart, refetch] = useCart();
     const totalPrice = cart.reduce((sum, item) => sum + item.price, 0)
     const [clientSecret, setClientSecret] = useState('');
     const { user } = useAuth();
     const [transactionId, setTransactionId] = useState('');
 
     useEffect(() => {
-        axiosSecure.post('/create-payment-intent', { price: totalPrice })
-            .then(res => {
-                // console.log(res.data);
-                console.log(res.data.clientSecret);
-                setClientSecret(res.data.clientSecret);
-            })
+        if (totalPrice > 0) {
+            axiosSecure.post('/create-payment-intent', { price: totalPrice })
+                .then(res => {
+                    // console.log(res.data);
+                    console.log(res.data.clientSecret);
+                    setClientSecret(res.data.clientSecret);
+                })
+        }
     }, [axiosSecure, totalPrice])
 
 
@@ -83,9 +86,18 @@ const CheckoutForm = () => {
                 }
 
                 const res = await axiosSecure.post('/payments', payment)
-                console.log('payment saves', res);
+                console.log('payment saves', res.data);
 
-
+                refetch();
+                if (res.data?.paymentResult?.insertedId) {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Payment successful",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
             }
         }
 
