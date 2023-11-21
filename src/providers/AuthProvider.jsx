@@ -7,65 +7,66 @@ import useAxiosPublic from "../hooks/useAxiosPublic";
 const auth = getAuth(app);
 export const AuthContext = createContext(null);
 
-const AuthProvider = ({children}) => {
-    const [user,setUser] = useState(null);
-    const [loading,setLoading] = useState(true);
+const AuthProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
     const googleProvider = new GoogleAuthProvider();
     const axiosPublic = useAxiosPublic();
 
-    const createUser = (email,password)=>{
+    const createUser = (email, password) => {
         setLoading(true);
-        return createUserWithEmailAndPassword(auth,email,password);
+        return createUserWithEmailAndPassword(auth, email, password);
     }
 
-    const login =(email,password)=>{
+    const login = (email, password) => {
         setLoading(true);
-        return signInWithEmailAndPassword(auth,email,password);
+        return signInWithEmailAndPassword(auth, email, password);
     }
 
-    const googleSignIn=()=>{
+    const googleSignIn = () => {
         setLoading(true);
-        return signInWithPopup(auth,googleProvider);
+        return signInWithPopup(auth, googleProvider);
     }
-    
-    const updateUserProfile = (name,photo)=>{
+
+    const updateUserProfile = (name, photo) => {
         setLoading(true);
-        return updateProfile(auth.currentUser,{
-            displayName:name, photoURL:photo
+        return updateProfile(auth.currentUser, {
+            displayName: name, photoURL: photo
         })
     }
 
-    const logOut = ()=>{
+    const logOut = () => {
         setLoading(true);
         return signOut(auth);
     }
 
 
-    useEffect(()=>{
-        const unSubscribe = onAuthStateChanged(auth,currentUser=>{
+    useEffect(() => {
+        const unSubscribe = onAuthStateChanged(auth, currentUser => {
             setUser(currentUser);
-            if(currentUser){
+            if (currentUser) {
                 // get token and store client
-                const userInfo = {email:currentUser.email}
-                axiosPublic.post('/jwt',userInfo)
-                .then(res=>{
-                    if(res.data.token){
-                        localStorage.setItem('access-token',res.data.token);
-                    }
-                })
+                const userInfo = { email: currentUser.email }
+                axiosPublic.post('/jwt', userInfo)
+                    .then(res => {
+                        if (res.data.token) {
+                            localStorage.setItem('access-token', res.data.token);
+                            setLoading(false);
+                        }
+                    })
             }
-            else{
+            else {
                 // TODO Remove token
                 localStorage.removeItem('access-token');
+                setLoading(false);
             }
-            setLoading(false);
             // console.log(currentUser);
         })
 
-        return ()=>{
+        return () => {
             return unSubscribe();
         }
-    },[axiosPublic])
+    }, [axiosPublic])
 
     const authInfo = {
         user,
